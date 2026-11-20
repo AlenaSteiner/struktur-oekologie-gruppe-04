@@ -1,0 +1,372 @@
+/* Neues Design: Farbschema Dunkelgrün / Off-White, Aufbau angelehnt an apple.com
+   (Hero, große Abschnittstitel, Produktbild links + Konfigurator rechts). */
+
+:root {
+  --dunkelgruen: #1D3630;
+  --gruen: #6E807A;
+  --hellgruen: #BECAC4;
+  --schwarz: #06140E;
+  --weiss: #FFFFFF;
+  --offwhite: #F7F4EE;
+  --tan: #E1DFDA;
+
+  --schrift: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  --schrift-titel: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", "IBM Plex Mono", Menlo, monospace;
+
+  --radius-gross: 28px;
+  --radius: 18px;
+  --radius-klein: 12px;
+  --nav-h: 48px;
+  --breite: 1280px;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; font: 15px/1.47 var(--schrift); letter-spacing: -0.01em;
+  color: var(--schwarz); background: var(--offwhite);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--dunkelgruen); }
+code { font-family: var(--mono); font-size: .92em; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* ---------- Navigation (wie die globale Leiste bei Apple) ---------- */
+#nav {
+  position: sticky; top: 0; z-index: 30; height: var(--nav-h);
+  background: rgba(247, 244, 238, .78);
+  -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid transparent; transition: border-color .3s, background .3s;
+}
+body.gescrollt #nav { border-bottom-color: var(--tan); background: rgba(247, 244, 238, .9); }
+.nav-innen {
+  max-width: var(--breite); height: 100%; margin: 0 auto; padding: 0 22px;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+}
+.nav-marke { font-weight: 600; font-size: 17px; color: var(--dunkelgruen); text-decoration: none; letter-spacing: -0.02em; }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a { font-size: 12px; color: var(--dunkelgruen); opacity: .8; text-decoration: none; transition: opacity .2s; }
+.nav-links a:hover { opacity: 1; }
+.nav-rechts { display: flex; align-items: center; gap: 14px; }
+.nav-klassisch { font-size: 12px; color: var(--gruen); text-decoration: none; }
+.nav-klassisch:hover { color: var(--dunkelgruen); }
+.projektwahl select {
+  font: 12px var(--schrift); color: var(--dunkelgruen); background: var(--weiss);
+  border: 1px solid var(--tan); border-radius: 980px; padding: 5px 12px;
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  background: var(--dunkelgruen); color: var(--offwhite); text-align: center;
+  padding: 96px 22px 88px;
+}
+.augenbraue {
+  margin: 0 0 6px; font-size: 21px; font-weight: 600; color: var(--hellgruen); letter-spacing: .01em;
+}
+.hero h1 {
+  margin: 0 auto; max-width: 900px;
+  font: 600 56px/1.07 var(--schrift-titel); letter-spacing: -0.03em;
+}
+.summe { margin: 34px auto 0; max-width: 900px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; }
+.summe .gross {
+  flex: 0 0 100%; display: block; font: 700 88px/1.05 var(--schrift-titel); letter-spacing: -0.045em;
+  background: linear-gradient(180deg, var(--weiss) 0%, var(--hellgruen) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.summe .teil {
+  display: inline-block; font: 12px var(--mono); color: var(--hellgruen);
+  border: 1px solid rgba(190, 202, 196, .35); border-radius: 980px; padding: 4px 12px;
+}
+.summe .gross + .teil { flex: 0 0 100%; border: 0; font: 15px var(--schrift); color: var(--offwhite); opacity: .8; padding: 0 0 8px; margin: 0; }
+.hero-knoepfe { margin-top: 36px; display: flex; justify-content: center; align-items: center; gap: 28px; flex-wrap: wrap; }
+.knopf {
+  display: inline-block; padding: 11px 22px; border-radius: 980px; font-size: 17px; text-decoration: none;
+  transition: transform .2s, background .2s;
+}
+.knopf-hell { background: var(--offwhite); color: var(--dunkelgruen); }
+.knopf-hell:hover { background: var(--weiss); transform: scale(1.02); }
+.link-hell { color: var(--hellgruen); font-size: 17px; text-decoration: none; }
+.link-hell:hover { text-decoration: underline; }
+
+#banner {
+  max-width: var(--breite); margin: 18px auto 0; padding: 12px 18px; border-radius: var(--radius-klein);
+  background: #F6E7E2; color: #7A2A18; border: 1px solid #E8C5BA; font-size: 14px;
+}
+
+/* ---------- Abschnitte ---------- */
+.abschnitt { padding: 100px 22px; scroll-margin-top: var(--nav-h); }
+.abschnitt > * { max-width: var(--breite); margin-left: auto; margin-right: auto; }
+.abschnitt-weiss { background: var(--weiss); }
+.abschnitt-dunkel { background: var(--schwarz); color: var(--offwhite); }
+.abschnitt-kopf { text-align: center; margin-bottom: 48px; }
+.gross-titel {
+  margin: 0; font: 600 48px/1.08 var(--schrift-titel); letter-spacing: -0.03em; color: var(--dunkelgruen);
+}
+.gross-titel span { color: var(--gruen); }
+.abschnitt-dunkel .gross-titel { color: var(--offwhite); }
+.abschnitt-dunkel .gross-titel span { color: var(--gruen); }
+.lead { margin: 14px auto 0; max-width: 640px; font-size: 21px; line-height: 1.38; color: var(--gruen); }
+.gruppenwahl { display: inline-flex; align-items: center; gap: 10px; margin-top: 20px; font-size: 14px; color: var(--gruen); }
+
+/* ---------- Karten ---------- */
+.karte {
+  background: var(--weiss); border-radius: var(--radius-gross); padding: 28px 32px;
+  box-shadow: 0 1px 0 rgba(6, 20, 14, .03);
+}
+.abschnitt-weiss .karte { background: var(--offwhite); }
+.abschnitt-dunkel .karte { background: var(--dunkelgruen); color: var(--offwhite); }
+.karte h2 { font: 600 24px/1.2 var(--schrift-titel); letter-spacing: -0.02em; color: var(--dunkelgruen); margin: 0 0 14px; }
+.karte h3, .option h3:not(.option-titel) { font-size: 17px; font-weight: 600; color: var(--dunkelgruen); margin: 26px 0 10px; }
+
+/* ---------- Konfigurator: Modell links (fest), Optionen rechts ---------- */
+.konfigurator { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(340px, 1fr); gap: 40px; align-items: start; }
+.buehne-sticky {
+  position: sticky; top: calc(var(--nav-h) + 16px);
+  max-height: calc(100vh - var(--nav-h) - 32px);
+  display: flex; flex-direction: column; gap: 14px;
+}
+#buehne { position: relative; }
+#szene {
+  height: 62vh; min-height: 420px; background: var(--weiss);
+  border-radius: var(--radius-gross); overflow: hidden;
+}
+.auswahl { flex: 1 1 auto; min-height: 64px; overflow-y: auto; padding: 18px 24px; border-radius: var(--radius); }
+.auswahl h2 { font-size: 19px; }
+#laden {
+  position: absolute; top: 16px; right: 18px; z-index: 6;
+  background: rgba(29, 54, 48, .88); color: var(--offwhite); padding: 5px 14px; border-radius: 980px; font-size: 12px;
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
+.buehne-spalte { position: relative; }
+#szenario-badge {
+  position: absolute; top: 16px; left: 50%; transform: translateX(-50%); z-index: 6;
+  background: var(--dunkelgruen); color: var(--offwhite); font: 600 11px var(--mono); letter-spacing: .06em;
+  padding: 5px 14px; border-radius: 980px; pointer-events: none;
+}
+
+/* Optionen-Spalte */
+.optionen { display: flex; flex-direction: column; gap: 0; }
+.option { padding: 30px 0; border-top: 1px solid var(--tan); }
+.option:first-child { border-top: 0; padding-top: 4px; }
+.option-titel { margin: 0 0 18px; font: 600 24px/1.2 var(--schrift-titel); letter-spacing: -0.02em; color: var(--dunkelgruen); }
+.option-titel span { color: var(--gruen); }
+
+/* Auswahlkacheln (wie die Modellwahl im Apple Store) */
+.kacheln { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.kacheln.drei { grid-template-columns: repeat(3, 1fr); }
+.kacheln.eins { grid-template-columns: 1fr; }
+.kachel.breit { grid-column: 1 / -1; }
+.kachel {
+  position: relative; display: flex; flex-direction: column; gap: 2px; cursor: pointer;
+  padding: 14px 16px; border-radius: var(--radius-klein); background: var(--weiss);
+  border: 2px solid var(--tan); transition: border-color .15s, box-shadow .15s;
+}
+.kachel:hover { border-color: var(--hellgruen); }
+.kachel input { position: absolute; opacity: 0; pointer-events: none; }
+.kachel b { font-size: 15px; font-weight: 600; color: var(--schwarz); }
+.kachel small { font-size: 12px; color: var(--gruen); }
+.kachel:has(input:checked) { border-color: var(--dunkelgruen); }
+.kachel:has(input:focus-visible) { box-shadow: 0 0 0 4px rgba(110, 128, 122, .35); }
+
+/* Schalter (Checkbox als iOS-Schalter) */
+.schalter { display: flex; align-items: center; gap: 12px; margin: 12px 0 4px; cursor: pointer; font-size: 14px; }
+.schalter small { display: block; font-size: 12px; color: var(--gruen); }
+.schalter input {
+  -webkit-appearance: none; appearance: none; flex: none; margin: 0;
+  width: 42px; height: 26px; border-radius: 980px; background: var(--tan); position: relative; cursor: pointer; transition: background .2s;
+}
+.schalter input::after {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--weiss); box-shadow: 0 1px 3px rgba(6, 20, 14, .25); transition: transform .2s;
+}
+.schalter input:checked { background: var(--dunkelgruen); }
+.schalter input:checked::after { transform: translateX(16px); }
+
+/* Zeilen mit Eingaben */
+.zeile { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 10px 0; font-size: 14px; }
+input[type=number], input[type=date], select {
+  font: 14px var(--schrift); color: var(--schwarz); background: var(--weiss);
+  border: 1px solid var(--tan); border-radius: 10px; padding: 7px 10px;
+}
+.zeile input[type=number], .zeile input[type=date], .zeile select { width: 160px; }
+input:focus-visible, select:focus-visible, button:focus-visible { outline: 3px solid rgba(110, 128, 122, .45); outline-offset: 1px; }
+input[type=range] { width: 100%; accent-color: var(--dunkelgruen); margin: 4px 0 8px; }
+input[type=radio], input[type=checkbox] { accent-color: var(--dunkelgruen); }
+
+.klein { font-size: 12px; line-height: 1.45; color: var(--gruen); margin: 6px 0; }
+.abschnitt-dunkel .klein { color: var(--hellgruen); }
+
+button, .knopf-zweit {
+  font: 14px var(--schrift); cursor: pointer; margin: 14px 8px 0 0;
+  padding: 9px 18px; border-radius: 980px; border: 0;
+  background: var(--dunkelgruen); color: var(--offwhite); transition: background .2s;
+}
+button:hover { background: var(--schwarz); }
+button:disabled { opacity: .5; cursor: default; }
+.knopf-zweit { background: transparent; color: var(--dunkelgruen); border: 1px solid var(--dunkelgruen); }
+.knopf-zweit:hover { background: var(--dunkelgruen); color: var(--offwhite); }
+
+/* Datensätze (von bedienung.js erzeugt) als Kacheln */
+#datensaetze h3 { font-size: 13px; font-weight: 600; color: var(--gruen); text-transform: uppercase; letter-spacing: .06em; margin: 14px 0 8px; }
+.opt {
+  display: block; position: relative; cursor: pointer; margin: 8px 0 0; padding: 12px 14px 10px 40px;
+  background: var(--weiss); border: 2px solid var(--tan); border-radius: var(--radius-klein) var(--radius-klein) 0 0;
+  font-size: 13px; transition: border-color .15s;
+}
+.opt input { position: absolute; left: 14px; top: 14px; margin: 0; }
+.opt:has(input:checked) { border-color: var(--dunkelgruen); }
+.opt:has(input:disabled) { opacity: .5; cursor: default; }
+.ds-info {
+  font-size: 12px; color: var(--gruen); padding: 6px 14px 10px 40px; margin: 0 0 4px;
+  background: var(--weiss); border: 2px solid var(--tan); border-top: 0; border-radius: 0 0 var(--radius-klein) var(--radius-klein);
+}
+.ds-info a { color: var(--dunkelgruen); }
+
+/* Materialwahl */
+.wahl { margin: 14px 0; }
+.wahl label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+.wahl label .klein { font-weight: 400; }
+.wahl select { width: 100%; }
+.warn { color: #9A3B1F; font-size: 12px; margin-top: 4px; }
+
+details { margin: 6px 0; font-size: 13px; color: var(--gruen); }
+details summary { cursor: pointer; font-weight: 600; color: var(--dunkelgruen); padding: 4px 0; }
+details table { margin: 6px 0; }
+
+/* ---------- Tabellen ---------- */
+.wrap { overflow-x: auto; }
+table.t { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+table.t th, table.t td { padding: 11px 12px; text-align: right; border-bottom: 1px solid var(--tan); white-space: nowrap; }
+table.t th:first-child, table.t td:first-child { text-align: left; }
+table.t th { font-size: 12px; font-weight: 600; color: var(--gruen); border-bottom-color: var(--hellgruen); }
+table.t tr.summe-zeile td { font-weight: 700; border-top: 2px solid var(--dunkelgruen); border-bottom: 0; color: var(--dunkelgruen); }
+table.t tr.aktiv td { background: rgba(190, 202, 196, .35); }
+table.t tbody tr:hover td, table.t tr:hover td { background: rgba(225, 223, 218, .35); }
+.abschnitt-dunkel table.t th { color: var(--hellgruen); border-bottom-color: var(--gruen); }
+.abschnitt-dunkel table.t td { border-bottom-color: rgba(190, 202, 196, .18); }
+.abschnitt-dunkel table.t tr:hover td { background: rgba(190, 202, 196, .08); }
+.option table.t { font-size: 12px; }
+.option table.t th, .option table.t td { padding: 5px 6px; }
+
+/* Werte des ausgewählten Stabs */
+.kv { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px 20px; font-size: 12px; color: var(--gruen); }
+.kv div b { display: block; font-size: 17px; font-weight: 600; color: var(--schwarz); font-variant-numeric: tabular-nums; }
+
+#tag { height: 380px; }
+
+/* Hover im 3D-Modell: ohne Box, mit Rand um die Buchstaben */
+#szene g.hovertext path, #szene g.hovertext rect { fill: none !important; stroke: none !important; fill-opacity: 0 !important; stroke-opacity: 0 !important; }
+#szene g.hovertext text { fill: var(--schwarz) !important; stroke: #fff; stroke-width: 3px; stroke-linejoin: round; paint-order: stroke fill; }
+
+/* ---------- Bewehrungsplan-Fenster ---------- */
+#plan-fenster {
+  position: fixed; right: 20px; bottom: 20px; width: 400px; max-height: 80vh; overflow-y: auto; z-index: 40;
+  background: rgba(255, 255, 255, .96); border-radius: var(--radius);
+  box-shadow: 0 20px 50px rgba(6, 20, 14, .22);
+  -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+}
+#plan-fenster.gross { width: min(900px, 70vw); }
+#plan-fenster > header {
+  position: sticky; top: 0; z-index: 1; display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 16px; background: var(--dunkelgruen); color: var(--offwhite); font-size: 14px;
+}
+#plan-fenster > header button {
+  margin: 0 0 0 6px; width: 28px; height: 28px; padding: 0; border-radius: 50%;
+  background: rgba(247, 244, 238, .14); color: var(--offwhite); font-size: 13px;
+}
+#plan-fenster > header button:hover { background: rgba(247, 244, 238, .28); }
+#plan-koerper { padding: 12px 16px 16px; }
+.plan-bild { position: relative; line-height: 0; border-radius: 10px; overflow: hidden; border: 1px solid var(--tan); }
+.plan-bild img { width: 100%; height: auto; }
+.plan-marke { position: absolute; background: rgba(220, 38, 38, .32); outline: 2px solid #dc2626; outline-offset: 1px; }
+.plan-marke.fest { background: rgba(37, 99, 235, .26); outline-color: #2563eb; }
+
+/* ---------- Vergleichsmodus: Modell und Plan nebeneinander, volle Breite ---------- */
+#plan-dock { display: none; }
+body.vergleich .konfigurator { grid-template-columns: 1fr; }
+body.vergleich .buehne-sticky { position: static; max-height: none; }
+body.vergleich #buehne { display: flex; gap: 16px; align-items: flex-start; }
+body.vergleich #szene { flex: 1 1 0; min-width: 0; height: max(62vh, 420px); }
+body.vergleich #plan-dock {
+  display: block; flex: 0 0 42%; min-width: 0; background: var(--weiss); border-radius: var(--radius-gross); overflow: hidden;
+}
+#dock-kopf { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 0 18px; height: 44px;
+             border-bottom: 1px solid var(--tan); font-size: 14px; color: var(--dunkelgruen); }
+#dock-kopf label { font-size: 12px; color: var(--gruen); white-space: nowrap; }
+#dock-viewport { position: relative; overflow: hidden; background: var(--weiss); height: calc(max(62vh, 420px) - 44px); }
+#dock-inhalt { position: absolute; left: 0; top: 0; width: 100%; transform-origin: 0 0; transition: transform .25s ease, opacity .2s; line-height: 0; }
+#dock-bild { display: block; width: 100%; height: auto; }
+#dock-viewport.gedimmt #dock-inhalt { opacity: .35; }
+#dock-info { padding: 12px 18px 14px; font-size: 13px; border-top: 1px solid var(--tan); }
+
+/* ---------- Optimierung und Reuse ---------- */
+.gut { color: #2F6B4F; font-weight: 600; }
+.schlecht { color: #9A3B1F; font-weight: 600; }
+.hs-liste { margin: 4px 0 8px; padding-left: 18px; }
+.hs-liste li { margin: 3px 0; }
+.opt-hinweis {
+  background: rgba(190, 202, 196, .35); color: var(--dunkelgruen); padding: 12px 16px;
+  border-radius: var(--radius-klein); font-size: 13px; margin: 0 0 14px;
+}
+.om { border-top: 1px solid var(--tan); padding: 14px 0; }
+.om-kopf { display: block; cursor: pointer; font-size: 15px; }
+.om-zeile { display: flex; align-items: center; gap: 12px; margin: 6px 0 4px 26px; flex-wrap: wrap; }
+.om-zeile input[type=range] { width: 200px; margin: 0; }
+.om-wert { font-size: 13px; min-width: 56px; font-variant-numeric: tabular-nums; }
+.om-ersparnis { margin-left: 26px; font-size: 13px; }
+.om > .klein { margin-left: 26px; }
+.opt-gross {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; margin: 18px 0 12px; padding: 18px 22px;
+  background: var(--dunkelgruen); color: var(--offwhite); border-radius: var(--radius);
+}
+.opt-gross b { font: 600 28px var(--schrift-titel); letter-spacing: -0.02em; }
+.opt-gross .gut { color: var(--hellgruen); }
+.opt-gross .schlecht { color: #F2B8A6; }
+.opt-tabellen { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px 28px; }
+.opt-chart { margin-top: 14px; }
+.opt-detail { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--tan); font-size: 13px; }
+.opt-detail h2 { font-size: 17px; }
+.opt-detail div { margin: 3px 0; }
+.bew-punkt { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; vertical-align: -1px; }
+#bew-legende { margin: 4px 0 10px 54px; }
+#reuse-ziel input[type=number], #reuse-ziel select { width: 110px; }
+#reuse-ziel button { margin: 0; padding: 4px 10px; }
+#reuse-parameter .zeile { margin: 4px 0; }
+
+/* ---------- Fußbereich ---------- */
+.fuss { background: var(--tan); padding: 40px 22px 50px; scroll-margin-top: var(--nav-h); }
+.fuss > * { max-width: var(--breite); margin-left: auto; margin-right: auto; }
+.fuss .klein { color: var(--gruen); font-size: 12px; line-height: 1.6; }
+.fuss b { color: var(--dunkelgruen); }
+.fuss-zeile { border-top: 1px solid rgba(110, 128, 122, .3); margin-top: 18px !important; padding-top: 14px; }
+
+/* ---------- Projekt Bauteil6 ----------
+   In dieser Ansicht hat Bauteil6 dieselben Funktionen wie der Pavillon (bauteil6.js), deshalb wird nichts ausgeblendet. */
+#plan-koerper h3 { font-size: 14px; margin: 14px 0 8px; color: var(--dunkelgruen); }
+#plan-koerper h3:first-child { margin-top: 0; }
+#b6-regeln details { margin: 4px 0; }
+
+/* ---------- Kleinere Bildschirme ---------- */
+@media (max-width: 1060px) {
+  .konfigurator { grid-template-columns: 1fr; }
+  .buehne-sticky { position: static; max-height: none; }
+  .nav-links { display: none; }
+  .hero h1 { font-size: 40px; }
+  .summe .gross { font-size: 64px; }
+  .gross-titel { font-size: 36px; }
+  body.vergleich #buehne { flex-direction: column; align-items: stretch; }
+  body.vergleich #szene { flex: none; width: 100%; }
+  body.vergleich #plan-dock { flex: none; width: 100%; }
+}
+@media (max-width: 600px) {
+  .abschnitt { padding: 64px 16px; }
+  .karte { padding: 20px 18px; border-radius: var(--radius); }
+  .kacheln, .kacheln.drei { grid-template-columns: 1fr; }
+  .nav-klassisch { display: none; }
+}
+
+/* Dunkler Abschnitt: Summenzeilen und Titel hell */
+.abschnitt-dunkel table.t tr.summe-zeile td { color: var(--offwhite); border-top-color: var(--hellgruen); }
+.abschnitt-dunkel .karte h2, .abschnitt-dunkel .karte h3 { color: var(--offwhite); }

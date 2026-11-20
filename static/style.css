@@ -1,0 +1,119 @@
+* { box-sizing: border-box; }
+body { margin: 0; font: 14px/1.4 -apple-system, "Segoe UI", Roboto, sans-serif; color: #222; background: #f3f4f6; }
+header { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+         padding: 10px 18px; background: #1f2933; color: #fff; }
+header h1 { margin: 0; font-size: 18px; }
+header h1 span { font-weight: 400; font-size: 12px; opacity: .6; margin-left: 10px; }
+.summe { display: flex; gap: 22px; flex-wrap: wrap; align-items: baseline; }
+.summe .gross { font-size: 24px; font-weight: 700; }
+.summe .teil { font-size: 12px; opacity: .8; }
+
+#layout { display: flex; align-items: flex-start; }
+#steuerung { width: 340px; flex: none; height: calc(100vh - 52px); position: sticky; top: 0; overflow-y: auto;
+             background: #fff; border-right: 1px solid #d8dce2; padding: 4px 14px 30px; font-size: 13px; }
+#steuerung section { border-bottom: 1px solid #eceef1; padding: 8px 0 10px; }
+h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: #7b8794; margin: 6px 0 6px; }
+h3 { font-size: 12px; margin: 8px 0 2px; }
+.zeile { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 3px 0; }
+.zeile input[type=radio], .zeile input[type=checkbox] { margin-right: 6px; }
+.zeile input[type=number], .zeile input[type=date], .zeile select { width: 140px; }
+input[type=range] { width: 100%; }
+.klein { font-size: 11px; color: #7b8794; margin: 4px 0; }
+button { margin-top: 6px; padding: 5px 9px; border: 1px solid #b8c0cc; background: #f7f8fa; border-radius: 5px; cursor: pointer; }
+button:hover { background: #e9edf2; }
+
+.opt { display: block; margin: 2px 0; }
+.opt input { margin-right: 6px; }
+.ds-info { font-size: 11px; color: #7b8794; margin: 2px 0 6px 20px; }
+.ds-info a { color: #2b6cb0; opacity: .85; }
+.wahl { margin: 5px 0; }
+.wahl label { display: block; font-weight: 600; font-size: 12px; }
+.wahl select { width: 100%; margin-top: 2px; }
+.warn { color: #b42318; font-size: 11px; margin-top: 2px; }
+details { margin: 3px 0; font-size: 11px; color: #7b8794; }
+details summary { cursor: pointer; font-weight: 600; color: #52606d; }
+details table { margin: 4px 0; }
+
+main { flex: 1; min-width: 0; padding: 12px 16px 40px; position: relative; }
+#szene { height: 62vh; min-height: 420px; background: #fff; border: 1px solid #d8dce2; border-radius: 6px; }
+#laden { position: absolute; top: 20px; right: 28px; z-index: 5; background: #1f2933; color: #fff; padding: 3px 10px;
+         border-radius: 12px; font-size: 12px; }
+#banner { background: #fde8e8; border: 1px solid #f5b5b5; color: #8a1c1c; padding: 8px 12px; border-radius: 6px; margin-bottom: 10px; }
+.karte { background: #fff; border: 1px solid #d8dce2; border-radius: 6px; padding: 8px 14px 12px; margin-top: 12px; }
+.karte h2 select { margin-left: 10px; text-transform: none; letter-spacing: 0; }
+table.t { border-collapse: collapse; width: 100%; font-size: 12px; }
+table.t th, table.t td { padding: 4px 8px; text-align: right; border-bottom: 1px solid #eceef1; white-space: nowrap; }
+table.t th:first-child, table.t td:first-child { text-align: left; }
+table.t th { color: #7b8794; font-weight: 600; }
+table.t tr.summe-zeile td { font-weight: 700; border-top: 2px solid #b8c0cc; }
+table.t tr.aktiv td { background: #eef6ff; }
+.wrap { overflow-x: auto; }
+.kv { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 4px 18px; }
+.kv div b { display: block; font-size: 15px; }
+#tag { height: 320px; }
+
+/* Hover im 3D-Modell: keine Box um den Text, dafuer weisser Rand um die Buchstaben (lesbar auf jeder Farbe). */
+#szene g.hovertext path, #szene g.hovertext rect { fill: none !important; stroke: none !important; fill-opacity: 0 !important; stroke-opacity: 0 !important; }
+#szene g.hovertext text { fill: #111 !important; stroke: #fff; stroke-width: 3px; stroke-linejoin: round; paint-order: stroke fill; }
+
+#plan-fenster { position: fixed; right: 16px; bottom: 16px; width: 380px; max-height: 80vh; overflow-y: auto; z-index: 20;
+                background: #fff; border: 1px solid #8a94a3; border-radius: 8px; box-shadow: 0 6px 24px rgba(0,0,0,.25); }
+#plan-fenster.gross { width: min(900px, 70vw); }
+#plan-fenster[hidden] { display: none; }
+#plan-fenster > header { position: sticky; top: 0; background: #1f2933; color: #fff; padding: 6px 10px; border-radius: 8px 8px 0 0;
+                         display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+#plan-fenster > header button { margin: 0 0 0 4px; padding: 1px 7px; background: #3e4c59; color: #fff; border-color: #52606d; }
+#plan-koerper { padding: 8px 10px 10px; }
+.plan-bild { position: relative; border: 1px solid #d8dce2; line-height: 0; }
+.plan-bild img { width: 100%; height: auto; }
+.plan-marke { position: absolute; background: rgba(220, 38, 38, .35); outline: 2px solid #dc2626; outline-offset: 1px; }
+.plan-marke.fest { background: rgba(37, 99, 235, .28); outline-color: #2563eb; }
+
+/* Vergleichsmodus: 3D-Modell links, Bewehrungsplan rechts (fest angedockt) */
+#plan-dock { display: none; }
+body.vergleich #buehne { display: flex; gap: 12px; align-items: flex-start; }
+body.vergleich #szene { flex: 1 1 0; min-width: 0; }
+body.vergleich #plan-dock { display: block; flex: 0 0 42%; min-width: 0; background: #fff; border: 1px solid #d8dce2; border-radius: 6px; }
+#dock-kopf { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 5px 10px; height: 30px;
+             border-bottom: 1px solid #eceef1; font-size: 12px; }
+#dock-kopf label { font-size: 11px; color: #7b8794; white-space: nowrap; }
+#dock-viewport { position: relative; overflow: hidden; background: #fff; height: calc(max(62vh, 420px) - 30px); }
+#dock-inhalt { position: absolute; left: 0; top: 0; width: 100%; transform-origin: 0 0; transition: transform .25s ease, opacity .2s; line-height: 0; }
+#dock-bild { display: block; width: 100%; height: auto; }
+#dock-viewport.gedimmt #dock-inhalt { opacity: .35; }
+#dock-info { padding: 6px 10px 8px; font-size: 12px; border-top: 1px solid #eceef1; }
+#dock-info details { font-size: 11px; }
+
+
+/* Optimierung: Heatmap, Hotspots, Szenarien (rechnerisch, kein statischer Nachweis) */
+#buehne { position: relative; }
+#szenario-badge { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 6; background: #b45309; color: #fff;
+                  font-size: 11px; font-weight: 700; letter-spacing: .04em; padding: 3px 12px; border-radius: 12px; pointer-events: none; }
+.gut { color: #15803d; font-weight: 600; }
+.schlecht { color: #b42318; font-weight: 600; }
+.hs-liste { margin: 2px 0 6px; padding-left: 16px; }
+.hs-liste li { margin: 1px 0; }
+.opt-hinweis { background: #fff7e6; border: 1px solid #f3d9a4; color: #7a4a05; padding: 6px 10px; border-radius: 5px; font-size: 12px; margin: 4px 0 8px; }
+.om { border-top: 1px solid #eceef1; padding: 6px 0; }
+.om-kopf { display: block; cursor: pointer; }
+.om-zeile { display: flex; align-items: center; gap: 10px; margin: 2px 0 2px 20px; }
+.om-zeile input[type=range] { width: 180px; }
+.om-wert { font-size: 12px; min-width: 52px; }
+.om-ersparnis { margin-left: 20px; font-size: 12px; }
+.om > .klein { margin-left: 20px; }
+.opt-gross { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin: 10px 0 6px; padding: 8px 10px; background: #f6f8fa; border-radius: 5px; }
+.opt-gross b { font-size: 20px; }
+.opt-tabellen { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 8px 18px; }
+.opt-chart { margin-top: 8px; }
+.opt-detail { margin-top: 10px; padding-top: 6px; border-top: 1px solid #eceef1; font-size: 12px; }
+.opt-detail div { margin: 2px 0; }
+.projektwahl { font-size: 12px; opacity: .9; }
+.projektwahl select { margin-left: 6px; }
+body.projekt-bauteil6 .nur-stockerau { display: none !important; }
+#b6-regeln details { margin: 2px 0; }
+.bew-punkt { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; }
+#bew-legende { margin: 2px 0 8px 22px; }
+#reuse-ziel input[type=number], #reuse-ziel select { width: 110px; }
+#reuse-ziel button { margin: 0; padding: 1px 7px; }
+#reuse-parameter .zeile { margin: 2px 0; }
+

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Embodied Carbon · Pavillon Stockerau</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <h1><span id="projekt-titel">Pavillon Stockerau</span> <span id="projekt-untertitel">Embodied Carbon &amp; Sonnenerwärmung</span></h1>
+  <label class="projektwahl">Projekt
+    <select id="projekt-wahl"><option value="stockerau">Pavillon Stockerau</option></select>
+  </label>
+  <div id="summe" class="summe"></div>
+</header>
+
+<div id="layout">
+<aside id="steuerung">
+  <section>
+    <h2>Darstellung</h2>
+    <label class="zeile"><input type="radio" name="modus" value="co2" checked> CO₂e je Stab (kg)</label>
+    <label class="zeile nur-stockerau"><input type="radio" name="modus" value="t"> Temperatur Stab (Mittel, °C)</label>
+    <label class="zeile nur-stockerau"><input type="radio" name="modus" value="spitze"> Temperatur Sonnenseite (Spitze, °C)</label>
+    <label class="zeile nur-stockerau"><input type="radio" name="modus" value="opt"> Optimierung: CO₂-Heatmap (Grün → Rot)</label>
+    <label class="zeile nur-stockerau"><input type="radio" name="modus" value="reuse"> Reuse-Planung (Zuschnitt aus Pavillon-Stäben)</label>
+    <label class="zeile">Farbskala CO₂
+      <select id="skala"><option value="linear">linear</option><option value="log">logarithmisch</option></select>
+    </label>
+    <label class="zeile nur-stockerau"><input type="checkbox" id="bew3d"> Bewehrung im 3D-Modell zeigen (aus dem Plan erzeugt)</label>
+    <div id="bew-legende" class="klein" hidden>
+      <ul id="bew-liste" class="hs-liste"></ul>
+      <div id="bew-summe"></div>
+      <div>Lage im Querschnitt und Detail 1 sind teils Annahmen, siehe <code>bewehrung3d.py</code>. Fundamentstab anklicken, um seine Stäbe zu sehen.</div>
+    </div>
+    <label class="zeile nur-stockerau"><input type="checkbox" id="vergleich"> Vergleichsmodus: 3D-Modell ↔ Bewehrungsplan</label>
+    <p class="klein nur-stockerau">Zeigt den Plan neben dem 3D-Modell. Das Bauteil unter der Maus (rot) oder das angeklickte (blau) ist im Plan markiert.</p>
+  </section>
+
+  <section id="opt-steuerung" hidden>
+    <h2>Optimierung · Heatmap</h2>
+    <label class="zeile">Ansicht
+      <select id="opt-ansicht"><option value="ist">Ist-Zustand</option><option value="szenario">Szenario (Ansätze rechts)</option></select>
+    </label>
+    <label class="zeile">Heatmap-Skala
+      <select id="opt-skala"><option value="absolut">absolut (alle Stäbe)</option><option value="gruppe">je Bauteilgruppe</option></select>
+    </label>
+    <label class="zeile">Hotspots: obere <b id="opt-schwelle-anzeige">10 %</b></label>
+    <input type="range" id="opt-schwelle" min="5" max="30" step="5" value="10">
+    <label class="zeile"><input type="checkbox" id="opt-nur-hotspots" checked> Nur Hotspots hervorheben (Rest blass)</label>
+    <p class="klein">Grün = niedriger, Gelb = mittlerer, Rot = hoher CO₂-Fußabdruck. Es zählen die gewählten Lebenszyklus-Module.</p>
+    <div id="opt-hotspots"></div>
+  </section>
+
+  <section id="reuse-steuerung" hidden>
+    <h2>Reuse-Planung · Legende</h2>
+    <ul id="reuse-legende" class="hs-liste"></ul>
+    <p class="klein">Spender sind Flachstähle, Rohre und Zugstäbe. Fundamente (Beton) sind keine Spender. Zielentwurf und Annahmen stehen unter dem 3D-Modell.</p>
+  </section>
+
+  <section id="b6-info" hidden>
+    <h2>Bauteil6 · Regeln</h2>
+    <div id="b6-statistik" class="klein"></div>
+    <div id="b6-regeln"></div>
+  </section>
+
+  <section class="nur-stockerau">
+    <h2>Bewehrung der Fundamente</h2>
+    <label class="opt"><input type="radio" name="bew" value="plan" checked> <b>laut Bewehrungsplan</b> (Stabliste, 1.015,63 kg)</label>
+    <label class="opt"><input type="radio" name="bew" value="pauschal"> pauschal 85 kg/m³ (Vorgabe der Aufgabe)</label>
+    <p class="klein">Gilt nur für Beton-Bauteile. Klick auf einen Fundamentstab zeigt den Plan.</p>
+  </section>
+
+  <section>
+    <h2>Lebenszyklus-Module</h2>
+    <label class="zeile"><input type="checkbox" name="modul" value="A1-A3" checked> A1–A3 Herstellung</label>
+    <label class="zeile"><input type="checkbox" name="modul" value="C"> C1–C4 Entsorgung</label>
+    <label class="zeile"><input type="checkbox" name="modul" value="D"> D Gutschriften/Lasten</label>
+    <p class="klein">Mehrere Module werden addiert. A4, A5 und B1 sind nicht enthalten.</p>
+  </section>
+
+  <section>
+    <h2>Datensatz je Materialgruppe</h2>
+    <div id="datensaetze"></div>
+    <button id="neu-laden" type="button">Datensätze neu von ÖKOBAUDAT laden</button>
+  </section>
+
+  <section>
+    <h2>Material je Bauteilgruppe</h2>
+    <div id="material-wahl"></div>
+    <button id="reset-material" type="button">Zurück auf Vorgabe der Aufgabe</button>
+  </section>
+
+  <section class="nur-stockerau">
+    <h2>Sonne</h2>
+    <label class="zeile">Datum <input type="date" id="datum" value="2026-07-21"></label>
+    <label class="zeile">Uhrzeit <b id="zeit-anzeige">14:00</b></label>
+    <input type="range" id="zeit" min="0" max="1425" step="15" value="840">
+    <label class="zeile">Himmel
+      <select id="himmel"><option value="klar">klar</option><option value="wolkig">wolkig</option><option value="bedeckt">bedeckt</option></select>
+    </label>
+    <label class="zeile">Lufttemperatur °C <input type="number" id="t_luft" value="30" min="-30" max="50" step="1"></label>
+    <label class="zeile">Wind m/s <input type="number" id="wind" value="1" min="0" max="25" step="0.5"></label>
+    <label class="zeile">Modell-Nord ° <input type="number" id="nord" value="0" min="0" max="360" step="5"></label>
+    <label class="zeile">Zeit in der Sonne <b id="dauer-anzeige">Dauerzustand</b></label>
+    <input type="range" id="dauer" min="0" max="240" step="5" value="0">
+    <p class="klein" id="sonnen-info"></p>
+  </section>
+
+  <section class="nur-stockerau">
+    <h2>Materialwerte (Annahmen)</h2>
+    <div id="materialwerte"></div>
+  </section>
+</aside>
+
+<main>
+  <div id="banner" hidden></div>
+  <div id="laden" hidden>rechne …</div>
+  <div id="buehne">
+    <div id="szenario-badge" hidden>SZENARIO · kein statischer Nachweis</div>
+    <div id="szene"></div>
+    <aside id="plan-dock">
+      <div id="dock-kopf">
+        <b id="dock-titel">Bewehrungsplan</b>
+        <label><input type="checkbox" id="dock-zoom" checked> auf Abschnitt zoomen</label>
+      </div>
+      <div id="dock-viewport">
+        <div id="dock-inhalt">
+          <img id="dock-bild" alt="Bewehrungsplan Streifenfundamente">
+          <div id="dock-fest" class="plan-marke fest" hidden></div>
+          <div id="dock-marke" class="plan-marke" hidden></div>
+        </div>
+      </div>
+      <div id="dock-info">
+        <div id="dock-text"></div>
+        <div id="dock-stabliste"></div>
+      </div>
+    </aside>
+  </div>
+  <section id="auswahl" class="karte"><span class="klein">Stab im 3D-Modell anklicken, um die Werte zu sehen.</span></section>
+  <section id="opt-karte" class="karte" hidden>
+    <h2>Optimierungspotenziale · mögliche Szenarien</h2>
+    <div id="opt-hinweis" class="opt-hinweis"></div>
+    <div id="opt-massnahmen"></div>
+    <div id="opt-ergebnis"></div>
+    <div id="opt-diagramm"></div>
+  </section>
+  <section id="reuse-karte" class="karte" hidden>
+    <h2>Reuse-Planung · Szenario</h2>
+    <div id="reuse-hinweis" class="opt-hinweis"></div>
+    <h3>Zielentwurf (Bedarf, Beispiel – änderbar)</h3>
+    <div id="reuse-ziel"></div>
+    <button type="button" id="reuse-neu-zeile">+ Zeile</button>
+    <button type="button" id="reuse-zurueck">Beispiel und Annahmen zurücksetzen</button>
+    <h3>Annahmen</h3>
+    <div id="reuse-parameter"></div>
+    <h3>Ergebnis</h3>
+    <div id="reuse-kennzahlen"></div>
+    <div id="reuse-zeilen"></div>
+    <h3>Vergleich Neu ↔ Reuse</h3>
+    <div id="reuse-vergleich"></div>
+    <div id="reuse-d1" class="opt-chart"></div>
+  </section>
+  <section class="karte"><h2>Ergebnis je Bauteilgruppe</h2><div id="tab-gruppen"></div></section>
+  <section class="karte nur-stockerau"><h2>Was wäre, wenn alle Stäbe aus demselben Material wären?</h2><div id="tab-vergleich"></div></section>
+  <section class="karte nur-stockerau">
+    <h2>Tagesverlauf der Temperatur
+      <select id="tag-gruppe"></select></h2>
+    <div id="tag"></div>
+  </section>
+  <section class="karte klein" id="fussnote"></section>
+</main>
+</div>
+
+<aside id="plan-fenster" hidden>
+  <header><b id="plan-titel"></b>
+    <span><button id="plan-gross" type="button" title="vergrößern / verkleinern">⤢</button>
+    <button id="plan-zu" type="button" title="schließen">✕</button></span></header>
+  <div id="plan-koerper"></div>
+</aside>
+
+<script src="/plotly.min.js"></script>
+<script src="/static/app.js"></script>
+<script src="/static/hover.js"></script>
+<script src="/static/plan.js"></script>
+<script src="/static/szene.js"></script>
+<script src="/static/tabellen.js"></script>
+<script src="/static/tag.js"></script>
+<script src="/static/bewehrung3d.js"></script>
+<script src="/static/optimierung.js"></script>
+<script src="/static/optimierung_ui.js"></script>
+<script src="/static/optimierung_detail.js"></script>
+<script src="/static/optimierung_hotspots.js"></script>
+<script src="/static/reuse.js"></script>
+<script src="/static/reuse_ui.js"></script>
+<script src="/static/reuse_ergebnis.js"></script>
+<script src="/static/bedienung.js"></script>
+<script src="/static/start.js"></script>
+</body>
+</html>
